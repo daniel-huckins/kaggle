@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/cdipaolo/goml/base"
 	"github.com/gocarina/gocsv"
 )
 
@@ -30,7 +31,7 @@ type Passenger struct {
 	PClass   int     `csv:"Pclass"`
 	Age      float64 `csv:"Age"`
 	NumSibs  float64 `csv:"SibSp"`
-	NumParch float64 `csv:"parch"`
+	NumParch float64 `csv:"Parch"`
 	Embarked string  `csv:"Embarked"`
 }
 
@@ -54,6 +55,14 @@ func (p *Passenger) Row() (row []float64) {
 	}
 	row = append(row, embarked[0], embarked[1])
 	return
+}
+
+// Datapoint returns the datapoint
+func (p *Passenger) Datapoint() base.Datapoint {
+	return base.Datapoint{
+		X: p.Row(),
+		Y: []float64{p.Survived},
+	}
 }
 
 // LoadPassengers returns passenger records from a file
