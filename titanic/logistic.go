@@ -2,8 +2,8 @@ package main
 
 import (
 	"encoding/csv"
+	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/cdipaolo/goml/base"
@@ -27,10 +27,15 @@ func main() {
 	writer.Write([]string{"PassengerId", "Survived"})
 	tests := LoadPassengers("./data/test.csv")
 	for _, row := range tests {
-		prediction := model.Predict(row.Row())[0]
+		predictions, err := model.Predict(row.Row())
+		if err != nil {
+			log.WithError(err).Fatal("error making prediction")
+		}
 		writer.Write([]string{
-			strconv.Itoa(row.ID),
-			strconv.FormatFloat(prediction, nil, -1, 64),
+			fmt.Sprintf("%d", row.ID),
+			fmt.Sprintf("%.f", predictions[0]),
 		})
 	}
+
+	writer.Flush()
 }
