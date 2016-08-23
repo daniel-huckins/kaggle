@@ -14,7 +14,7 @@ var log = logrus.New()
 
 func main() {
 	X, y := LoadRows("./data/train.csv")
-	model := linear.NewLogistic(base.BatchGA, 1e-4, 6, 800, X, y)
+	model := linear.NewLogistic(base.BatchGA, 1e-4, 0, 800, X, y)
 	err := model.Learn()
 	if err != nil {
 		log.WithError(err).Fatal("error learning")
@@ -36,6 +36,5 @@ func main() {
 			fmt.Sprintf("%.f", predictions[0]),
 		})
 	}
-
 	writer.Flush()
 }
