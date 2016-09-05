@@ -19,8 +19,8 @@ import (
 const (
 	trainingDir = "./data/train"
 	testDir     = "./data/test"
-	width       = 64
-	height      = 64
+	width       = 256
+	height      = 256
 )
 
 func extractImage(imagefile string) *image.Gray {
