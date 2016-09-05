@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	trainingDir = "./data/train"
-	testDir     = "./data/test"
+	trainingDir = "./input/train"
+	testDir     = "./input/test"
 	width       = 256
 	height      = 256
 )
