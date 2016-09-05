@@ -1,6 +1,6 @@
 *.csv
 *.json
-
+*.jpg
 
 
 # Created by https://www.gitignore.io/api/go,python,ipythonnotebook
