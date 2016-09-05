@@ -96,7 +96,7 @@ func main() {
 			log.Fatal(err)
 		}
 		id := strings.Split(file.Name(), ".")[0]
-		label := string(res[0])
+		label := fmt.Sprintf("%.0f", res[0])
 		writer.Write([]string{id, label})
 	}
 
