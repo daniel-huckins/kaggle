@@ -6,10 +6,10 @@ import (
 	"image"
 	"image/jpeg"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/anthonynsimon/bild/effect"
 	"github.com/anthonynsimon/bild/transform"
 	"github.com/cdipaolo/goml/base"
@@ -28,6 +28,7 @@ func extractImage(imagefile string) *image.Gray {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 	img, err := jpeg.Decode(file)
 	if err != nil {
 		log.Fatal(err)
@@ -84,11 +85,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer output.Close()
 	writer := csv.NewWriter(output)
-	defer writer.Flush()
 	writer.Write([]string{"id", "label"})
 
-	for _, file := range files {
+	nFiles := len(files)
+
+	for i, file := range files {
 		img := extractImage(fmt.Sprintf("%s/%s", testDir, file.Name()))
 		test := f(img.Pix)
 		res, err := knn.Predict(test)
@@ -97,7 +100,13 @@ func main() {
 		}
 		id := strings.Split(file.Name(), ".")[0]
 		label := fmt.Sprintf("%.0f", res[0])
+		log.WithFields(log.Fields{
+			"id":     id,
+			"label":  label,
+			"i":      i,
+			"nFiles": nFiles,
+		}).Info("Output")
 		writer.Write([]string{id, label})
 	}
-
+	writer.Flush()
 }
