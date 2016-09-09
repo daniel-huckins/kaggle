@@ -4,7 +4,8 @@
 from keras.models import Sequential
 from keras.layers import (Convolution2D, MaxPooling2D, Dense,
                           Activation, Dropout, Flatten)
-from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import (ImageDataGenerator,
+                                       list_pictures, load_img)
 from keras.utils.visualize_util import plot
 import pydot
 from numpy import savetxt
@@ -63,6 +64,14 @@ def visual():
          show_shapes=True, show_layer_names=True)
 
 
+def test_data():
+    test_gen = ImageDataGenerator(rescale=1.0 / 255.0)
+    test_data = test_gen.flow_from_directory(
+        '../input/test',
+        target_size=TARGET_SIZE)
+    return test_data
+
+
 def main():
     train_gen = load_data("../input/train")
 
@@ -74,15 +83,8 @@ def main():
     with open('model.json', 'w') as f:
         f.write(model.to_json())
 
-    test_gen = ImageDataGenerator(rescale=1.0 / 255.0)
-    test_data = test_gen.flow_from_directory(
-        '../input/test',
-        target_size=TARGET_SIZE,
-        class_mode='binary')
-    predictions = model.predict_generator(test_data, test_data.N)
-    savetxt('predictions.csv', predictions)
-
 
 if __name__ == '__main__':
-    main()
+    # main()
     # visual()
+    test_data()
