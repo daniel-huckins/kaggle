@@ -70,7 +70,6 @@ def main():
 
     model.fit_generator(train_gen, 2000, 50)
 
-    model.save(filepath)
     # save the model
     with open('model.json', 'w') as f:
         f.write(model.to_json())
