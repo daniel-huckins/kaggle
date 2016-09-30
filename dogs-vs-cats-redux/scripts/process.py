@@ -77,14 +77,12 @@ def main():
 
     model = new_model()
 
-    model.fit_generator(train_gen, 2000, 50)
+    model.fit_generator(train_gen, 2000, 100)
 
-    # save the model
-    with open('model.json', 'w') as f:
-        f.write(model.to_json())
+    model.save('model.h5')
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     # visual()
-    test_data()
+    # test_data()
