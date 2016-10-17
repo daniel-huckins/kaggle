@@ -31,7 +31,15 @@ x_train, x_test, y_train, y_test = train_test_split(
     train, y, test_size=0.2)
 
 model = LinearSVR()
-params = {'C': range(1, 10), 'duel': (True, False), 'epsilon': (0.1, 0)}
+c_range = list()
+params = {'C': range(0.001, 10), 'epsilon': (0.1, 0)}
 
-clf = GridSearchCV(model, params, n_jobs=4)
+clf = GridSearchCV(model, params, n_jobs=4, verbose=3)
 clf.fit(x_train, y_train)
+
+results = pd.DataFrame(clf.cv_results_)
+results.to_json('model_results.json')
+
+predictions = clf.predict(x_test)
+mae = mean_absolute_error(y_true, y_pred)
+print('mean_absolute_error: {}'.format(mae))
